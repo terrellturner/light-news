@@ -1,14 +1,12 @@
 <template>
   <div
     :key="article.index"
-    v-for="article in shuffleArray(articles).slice(0, 3)"
+    v-for="article in articles.slice(0, 3)"
     class="column"
   >
     <SingleArticle :article="article" />
   </div>
 </template>
-
-//shuffleArray(articles).slice(0, 3)
 
 <script>
 import SingleArticle from "./SingleArticle.vue";
@@ -26,7 +24,13 @@ export default {
       articleArray: [],
     };
   },
+  mounted() {
+    this.articleArray = this.shuffleArray(this.articles);
+  },
   methods: {
+    randomNum(min = 0, max = 1) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    },
     shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
