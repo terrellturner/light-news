@@ -31,11 +31,7 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <div class="title">
-          <VueWriter
-            :array="['LightNews.']"
-            :iterations="1"
-            :caret="underscore"
-          />
+          <VueWriter :array="['LightNews.']" :iterations="1" />
         </div>
         <p class="subtitle">Relevant news, fast and lightweight.</p>
       </div>
@@ -50,12 +46,8 @@
         />
       </div>
     </div>
-    <div class="section">
-      <div
-        :key="article.index"
-        v-for="article in articles"
-        class="columns is-desktop"
-      >
+    <div class="container is-fluid">
+      <div :key="article.index" v-for="article in articles" class="columns">
         <LightArticles :articles="articles" />
       </div>
     </div>
@@ -95,8 +87,9 @@ export default {
     async retrieveArticles(category = "general") {
       console.log(category);
       const cacheData = sessionStorage.getItem("site-data");
+      const api = process.env.VUE_APP_NEWSAPI;
       var url =
-        "https://api.thenewsapi.com/v1/news/top?api_token=PtqU8VXn2wmMHIZa9MYNj9Po6vX4tdl5UaoQo9tY&locale=us" +
+        `https://api.thenewsapi.com/v1/news/top?api_token=${api}&locale=us` +
         `&categories=${category}`;
       var req = new Request(url);
 
@@ -118,7 +111,6 @@ export default {
       }
     },
     getNewArticles(category) {
-      console.log(category);
       sessionStorage.removeItem("site-data");
       this.retrieveArticles(category);
     },
@@ -170,7 +162,7 @@ p.title {
 
 .is-typed span.cursor {
   display: inline-block;
-  width: 3px;
+  width: 2px;
   background-color: rgb(255, 255, 255);
   animation: blink 1s infinite;
 }

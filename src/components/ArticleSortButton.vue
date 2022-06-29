@@ -26,7 +26,7 @@ export default {
       return array;
     },
   },
-  created() {
+  data() {
     this.articleTags = [
       "button is-info is-light",
       "button is-success is-light",
