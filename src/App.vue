@@ -46,8 +46,12 @@
         />
       </div>
     </div>
-    <div class="container is-fluid">
-      <div :key="article.index" v-for="article in articles" class="columns">
+    <div class="section">
+      <div
+        :key="article.index"
+        v-for="article in articles"
+        class="columns is-centered is-multiline"
+      >
         <LightArticles :articles="articles" />
       </div>
     </div>

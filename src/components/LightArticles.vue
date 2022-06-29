@@ -1,12 +1,14 @@
 <template>
   <div
     :key="article.index"
-    v-for="article in articles.slice(0, 3)"
-    class="column"
+    v-for="article in articles"
+    class="column is-one-third"
   >
     <SingleArticle :article="article" />
   </div>
 </template>
+
+//shuffleArray(articles).slice(0, 3)
 
 <script>
 import SingleArticle from "./SingleArticle.vue";
