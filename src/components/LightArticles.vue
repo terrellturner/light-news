@@ -4,7 +4,7 @@
     v-for="article in articles"
     class="column is-one-third"
   >
-    <SingleArticle :article="article" />
+    <SingleArticle :key="article.uuid" :article="article" />
   </div>
 </template>
 

@@ -5,18 +5,27 @@
         <div class="container">
           <div class="navbar-brand">
             <a href="#" class="navbar-item">LightNews</a>
-            <span class="navbar-burger" data-target="navbarIndex">
+            <span
+              class="navbar-burger"
+              :class="{ 'is-active': showNavBar }"
+              @click="showNavBar = !showNavBar"
+              data-target="navbarIndex"
+            >
               <span></span>
               <span></span>
               <span></span>
             </span>
           </div>
-          <div class="navbar-menu" id="navbarIndex">
+          <div
+            class="navbar-menu"
+            :class="{ 'is-active': showNavBar }"
+            id="navbarIndex"
+          >
             <div class="navbar-end">
               <a href="index.html" class="navbar-item">Home</a>
               <a href="#" class="navbar-item">About</a>
               <span class="navbar-item">
-                <a href="" class="button is-danger is-inverted"
+                <a href="#" class="button is-danger is-inverted"
                   ><span class="icon">
                     <i class="fa-brands fa-github"></i>
                   </span>
@@ -47,11 +56,7 @@
       </div>
     </div>
     <div class="section">
-      <div
-        :key="article.index"
-        v-for="article in articles"
-        class="columns is-centered is-multiline"
-      >
+      <div class="columns is-centered is-multiline">
         <LightArticles :articles="articles" />
       </div>
     </div>
@@ -71,6 +76,7 @@ export default {
       articles: [],
       articleArray: [],
       categories: [],
+      showNavBar: false,
     };
   },
   created() {
@@ -93,8 +99,10 @@ export default {
       const cacheData = sessionStorage.getItem("site-data");
       const api = process.env.VUE_APP_NEWSAPI;
       var url =
-        `https://api.thenewsapi.com/v1/news/top?api_token=${api}&locale=us` +
-        `&categories=${category}`;
+        `https://api.thenewsapi.com/v1/news/all?language=en&locale=us&api_token=${api}` +
+        `&categories=${category}` +
+        `&exclude_domains=*.medium.com,*.foxnews.com,video.foxnews.com,medium.com`;
+      console.log(url);
       var req = new Request(url);
 
       if (cacheData !== null) {
