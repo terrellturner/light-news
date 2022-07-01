@@ -27,12 +27,14 @@ export default {
     },
   },
   data() {
-    this.articleTags = [
-      "button is-info is-light",
-      "button is-success is-light",
-      "button is-warning is-light",
-      "button is-danger is-light",
-    ];
+    return {
+      articleTags: [
+        "button is-info is-light",
+        "button is-success is-light",
+        "button is-warning is-light",
+        "button is-danger is-light",
+      ],
+    };
   },
   emits: ["pull-data"],
 };

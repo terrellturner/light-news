@@ -1,45 +1,47 @@
 <template>
-  <Transition name="slide-fade" :key="article.uuid">
-    <div class="card">
-      <div class="card-content">
+  <div class="card">
+    <div class="card-content">
+      <Transition name="slide-fade" :key="article.uuid">
         <a class="title" :href="article.url">
           {{ article.title }}
         </a>
-        <div class="image content is-16by9">
+      </Transition>
+      <div class="image content is-16by9">
+        <Transition name="slide-fade" :key="article.uuid">
           <img
             style="object-fit: cover"
             :src="article.image_url"
             alt=""
             @error="changeDefaultImg"
           />
-        </div>
-        <p class="subtitle">
-          {{ article.source }}
-        </p>
+        </Transition>
       </div>
-      <footer class="card-footer">
-        <p class="card-footer-item">
-          <span>
-            <a
-              :href="
-                'https://www.facebook.com/sharer/sharer.php?u=' + article.url
-              "
-            >
-              <i class="fab fa-facebook"></i
-            ></a>
-          </span>
-        </p>
-        <p class="card-footer-item">
-          <span>
-            <img src="" alt="" />
-            <a :href="'https://twitter.com/intent/tweet?text=' + article.url"
-              ><i class="fab fa-twitter"></i
-            ></a>
-          </span>
-        </p>
-      </footer>
+      <p class="subtitle">
+        {{ article.source }}
+      </p>
     </div>
-  </Transition>
+    <footer class="card-footer">
+      <p class="card-footer-item">
+        <span>
+          <a
+            :href="
+              'https://www.facebook.com/sharer/sharer.php?u=' + article.url
+            "
+          >
+            <i class="fab fa-facebook"></i
+          ></a>
+        </span>
+      </p>
+      <p class="card-footer-item">
+        <span>
+          <img src="" alt="" />
+          <a :href="'https://twitter.com/intent/tweet?text=' + article.url"
+            ><i class="fab fa-twitter"></i
+          ></a>
+        </span>
+      </p>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -51,14 +53,11 @@ export default {
   },
   setup() {},
   data() {
-    return {
-      defaultImg: "../public/imgs/light.jpg",
-    };
+    return {};
   },
   methods: {
     changeDefaultImg(e) {
-      e.target.src =
-        "https://media.discordapp.net/attachments/113873675970805761/991923707129905272/LightNews.png";
+      e.target.src = "./light-news/dist/imgs/LightNews.png";
     },
   },
 };

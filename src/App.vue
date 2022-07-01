@@ -95,14 +95,12 @@ export default {
   },
   methods: {
     async retrieveArticles(category = "general") {
-      console.log(category);
       const cacheData = sessionStorage.getItem("site-data");
       const api = process.env.VUE_APP_NEWSAPI;
       var url =
         `https://api.thenewsapi.com/v1/news/all?language=en&locale=us&api_token=${api}` +
         `&categories=${category}` +
         `&exclude_domains=*.medium.com,*.foxnews.com,video.foxnews.com,medium.com`;
-      console.log(url);
       var req = new Request(url);
 
       if (cacheData !== null) {
