@@ -1,13 +1,13 @@
 <template>
-  <buttons :key="category.id" v-for="category in categories">
+  <div :key="category.id" v-for="category in categories">
     <button
       @click.prevent="$emit('pull-data', category.category)"
-      :class="shuffleArray(articleTags)[0]"
+      :class="articleTags[randomNum(articleTags)]"
       href="#"
     >
       {{ category.category }}
     </button>
-  </buttons>
+  </div>
 </template>
 
 <script>
@@ -18,12 +18,11 @@ export default {
     categories: Array,
   },
   methods: {
-    shuffleArray(array) {
+    randomNum(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        return j;
       }
-      return array;
     },
   },
   data() {

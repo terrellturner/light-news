@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{ 'fade-out-transition': fadeOut }">
     <div class="card-content">
       <Transition name="slide-fade" :key="article.uuid">
         <a class="title" :href="article.url">
@@ -45,11 +45,13 @@
 </template>
 
 <script>
+import defaultImg from "../assets/LightNews.png";
 export default {
   name: "SingleArticle",
   components: {},
   props: {
     article: Object,
+    fadeOut: Boolean,
   },
   setup() {},
   data() {
@@ -57,7 +59,7 @@ export default {
   },
   methods: {
     changeDefaultImg(e) {
-      e.target.src = "./light-news/dist/imgs/LightNews.png";
+      e.target.src = defaultImg;
     },
   },
 };
@@ -71,6 +73,21 @@ a {
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
+}
+.fade-out-transition {
+  animation: fade-out-animation 500ms ease-out;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-out-animation {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes fadeInAnimation {

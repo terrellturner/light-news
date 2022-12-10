@@ -4,7 +4,12 @@
     v-for="article in articles"
     class="column is-one-third"
   >
-    <SingleArticle :key="article.uuid" :article="article" />
+    <SingleArticle
+      :key="article.uuid"
+      :article="article"
+      :fadeOut="fadeOut"
+      :class="{ 'fade-out-transition': fadeOut }"
+    />
   </div>
 </template>
 
@@ -17,6 +22,7 @@ export default {
   name: "LightArticles",
   props: {
     articles: Array,
+    fadeOut: Boolean,
   },
   components: {
     SingleArticle,
@@ -24,6 +30,7 @@ export default {
   data() {
     return {
       articleArray: [],
+      fadeOutTransition: false,
     };
   },
   mounted() {

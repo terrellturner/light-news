@@ -1,44 +1,42 @@
 <template>
-  <section class="hero is-primary is-medium">
+  <section class="hero is-medium">
     <div class="hero-head">
-      <nav class="navbar is-primary">
-        <div class="container">
-          <div class="navbar-brand">
-            <a href="#" class="navbar-item">LightNews</a>
-            <span
-              class="navbar-burger"
-              :class="{ 'is-active': showNavBar }"
-              @click="showNavBar = !showNavBar"
-              data-target="navbarIndex"
-            >
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-          </div>
-          <div
-            class="navbar-menu"
+      <nav class="navbar is-transparent">
+        <div class="navbar-brand">
+          <a href="#" id="logo-text" class="navbar-item">LN.</a>
+          <span
+            class="navbar-burger"
             :class="{ 'is-active': showNavBar }"
-            id="navbarIndex"
+            @click="showNavBar = !showNavBar"
+            data-target="navbarIndex"
           >
-            <div class="navbar-end">
-              <a href="index.html" class="navbar-item">Home</a>
-              <a href="#" class="navbar-item">About</a>
-              <span class="navbar-item">
-                <a href="#" class="button is-danger is-inverted"
-                  ><span class="icon">
-                    <i class="fa-brands fa-github"></i>
-                  </span>
-                  <span>Repo</span>
-                </a>
-              </span>
-            </div>
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </div>
+        <div
+          class="navbar-menu"
+          :class="{ 'is-active': showNavBar }"
+          id="navbarIndex"
+        >
+          <div class="navbar-end">
+            <a href="index.html" class="navbar-item">Home</a>
+            <a href="#" class="navbar-item">About</a>
+            <span class="navbar-item">
+              <a href="#" class="button is-danger is-inverted"
+                ><span class="icon">
+                  <i class="fa-brands fa-github"></i>
+                </span>
+                <span>Repo</span>
+              </a>
+            </span>
           </div>
         </div>
       </nav>
     </div>
     <div class="hero-body">
-      <div class="container has-text-centered">
+      <div class="box has-text-centered">
         <div class="title">
           <VueWriter :array="['LightNews.']" :iterations="1" />
         </div>
@@ -48,19 +46,28 @@
   </section>
   <div class="container is-fluid">
     <div class="content has-text-centered">
-      <div class="content">
+      <div id="button-container" class="content">
         <ArticleSortButton
           @pull-data="getNewArticles"
           :categories="categories"
+          @click="fadeOut = !fadeOut"
         />
       </div>
     </div>
     <div class="section">
       <div class="columns is-centered is-multiline">
-        <LightArticles :articles="articles" />
+        <LightArticles :articles="articles" :fadeOut="fadeOut" />
       </div>
     </div>
   </div>
+  <footer class="footer">
+    <div
+      class="container has-text-centered"
+      :set="(currentYear = new Date().getFullYear())"
+    >
+      <p>&copy; {{ currentYear }} rellSoft</p>
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -77,6 +84,7 @@ export default {
       articleArray: [],
       categories: [],
       showNavBar: false,
+      fadeOut: false,
     };
   },
   created() {
@@ -95,6 +103,8 @@ export default {
   },
   methods: {
     async retrieveArticles(category = "general") {
+      this.handleArticleFade();
+
       const cacheData = sessionStorage.getItem("site-data");
       const api = process.env.VUE_APP_NEWSAPI;
       var url =
@@ -118,13 +128,30 @@ export default {
           sessionStorage.getItem("site-data")
         );
         this.articles = dataParsed.data;
+
+        this.fadeOut = !this.fadeOut;
+        console.log(this.fadeOut);
       }
     },
     getNewArticles(category) {
+      this.handleArticleFade();
+      console.log(this.fadeOut);
       sessionStorage.removeItem("site-data");
       this.retrieveArticles(category);
     },
+    storageCheck(key) {
+      if (!sessionStorage.getItem(key)) {
+        return true;
+      }
+    },
+    handleArticleFade() {
+      if (this.storageCheck("site-data")) {
+        this.fadeOut = !this.fadeOut;
+      }
+    },
   },
+
+  //Run at startup
   mounted() {
     this.retrieveArticles();
   },
@@ -133,17 +160,34 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300;1,6..72,400;1,6..72,700&family=Poppins:ital,wght@0,300;0,700;1,100&display=swap");
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+#button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#logo-text {
+  font-size: 2rem;
+  padding-top: 1rem;
+  color: #fff;
+}
+
 h1 {
   font-size: 3rem;
 }
 p.title {
   font-size: 1.6rem;
+}
+.subtitle {
+  font-size: 0.5rem;
+  color: white;
 }
 .content {
   margin-top: 1rem;
@@ -152,18 +196,63 @@ p.title {
   margin-right: 0.1rem;
 }
 
-.hero-body {
-  background-image: url("../public/imgs/light.jpg");
+.navbar {
 }
 
-.hero-body > .container {
+.navbar-brand,
+.navbar-menu {
+  backdrop-filter: blur(5px);
+}
+
+.navbar-menu {
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px);
-  padding: 5rem;
+  text-align: center;
 }
 
-.is-typed {
+.navbar-burger > span {
+  color: #fff;
+}
+
+.navbar-item {
+  color: #fff;
+}
+
+.navbar-end > .navbar-item:hover {
+  background-color: rgba(255, 255, 255, 0);
+  color: #fff;
+}
+
+.hero-head {
+  width: 100%;
+}
+
+.hero-body {
+  background-image: url("../public/imgs/light.jpg");
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 4rem;
+}
+
+.hero-head {
+  position: absolute;
+  width: 100%;
+}
+
+.hero-body > .box {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  padding: 2rem;
+  width: 50%;
+  margin-top: 2rem;
+}
+
+.is-typed,
+#logo-text {
   font-family: "Newsreader", serif;
+  font-style: italic;
+  font-weight: lighter;
 }
 
 .is-typed span.typed {
@@ -190,6 +279,11 @@ p.title {
   animation: none;
 }
 
+.container > .navbar-brand > .navbar-burger {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 @keyframes blink {
   49% {
     background-color: rgb(255, 255, 255);
@@ -199,6 +293,24 @@ p.title {
   }
   99% {
     background-color: transparent;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  #logo-text {
+    font-size: 1rem;
+  }
+  .hero-body {
+    padding: 0;
+  }
+  .hero-body > .box {
+    margin-top: 3rem;
+    width: 100%;
+  }
+  .container.is-fluid,
+  .section {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>
