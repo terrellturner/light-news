@@ -106,7 +106,7 @@ export default {
       this.handleArticleFade();
 
       const cacheData = sessionStorage.getItem("site-data");
-      const api = process.env.API_KEY;
+      const api = process.env.VUE_APP_API_KEY;
       var url =
         `https://api.thenewsapi.com/v1/news/all?language=en&locale=us&api_token=${api}` +
         `&categories=${category}` +
